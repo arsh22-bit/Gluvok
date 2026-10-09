@@ -1,105 +1,116 @@
 "use client";
 
 import Link from "next/link";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { PilotDialog } from "@/components/pilot-dialog";
-import { Activity, ArrowUpRight, Cpu } from "lucide-react";
+import { AnthropicSpikeMark } from "@/components/claude/anthropic-mark";
+import { ArrowRight, Menu, X } from "lucide-react";
+import { useState } from "react";
 
 export function Navbar() {
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  const navLinks = [
+    { href: "#console", label: "Console" },
+    { href: "#problems", label: "Overview" },
+    { href: "#architecture", label: "Architecture" },
+    { href: "#capabilities", label: "Capabilities" },
+    { href: "#industries", label: "Industries" },
+    { href: "#hardware", label: "Compatibility" },
+    { href: "#roi", label: "ROI" },
+  ];
+
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-border/70 bg-background/90 backdrop-blur-md">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-        {/* Brand & Technical Revision Indicator */}
-        <div className="flex items-center gap-4">
-          <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="size-8 rounded-xs bg-primary text-primary-foreground flex items-center justify-center font-mono font-bold text-sm tracking-wider">
-              GV
-            </div>
-            <div className="flex flex-col">
-              <span className="font-semibold tracking-wider text-sm text-foreground flex items-center gap-1.5 font-mono">
-                GLUVOK
-                <span className="text-[10px] text-muted-foreground font-normal border border-border/80 px-1 py-0.2 rounded-xs">
-                  EDGE V2.4
-                </span>
-              </span>
-              <span className="text-[10px] text-muted-foreground uppercase tracking-widest font-mono">
-                Industrial Scale AI
-              </span>
-            </div>
-          </Link>
-
-          <div className="hidden lg:flex items-center gap-2 pl-4 border-l border-border/60 text-xs font-mono text-muted-foreground">
-            <span className="relative flex size-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full size-2 bg-emerald-500"></span>
+    <header className="sticky top-0 z-40 w-full h-16 border-b border-[#e6dfd8] bg-[#faf9f5]/95 backdrop-blur-sm transition-colors">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center justify-between">
+        {/* Brand & Editorial Wordmark */}
+        <div className="flex items-center gap-8">
+          <Link href="/" className="flex items-center gap-2.5 focus:outline-none">
+            <AnthropicSpikeMark size={20} className="text-[#cc785c]" />
+            <span
+              className="text-[22px] font-normal tracking-[-0.5px] text-[#141413]"
+              style={{ fontFamily: 'var(--font-serif)' }}
+            >
+              Gluvok
             </span>
-            <span className="text-[11px] tracking-tight">INDICATOR BUS: ACTIVE (RS-232/485)</span>
-          </div>
-        </div>
+            <span className="hidden sm:inline-block px-2 py-0.5 rounded-full text-[11px] font-medium tracking-wide bg-[#efe9de] text-[#6c6a64]">
+              Autonomous Scale AI
+            </span>
+          </Link>
 
-        {/* Navigation Anchors */}
-        <nav className="hidden md:flex items-center gap-6 text-xs font-mono tracking-tight text-muted-foreground">
-          <Link
-            href="#console"
-            className="hover:text-foreground transition-colors"
-          >
-            01//CONSOLE
-          </Link>
-          <Link
-            href="#architecture"
-            className="hover:text-foreground transition-colors"
-          >
-            02//ARCHITECTURE
-          </Link>
-          <Link
-            href="#capabilities"
-            className="hover:text-foreground transition-colors"
-          >
-            03//CAPABILITIES
-          </Link>
-          <Link
-            href="#industries"
-            className="hover:text-foreground transition-colors"
-          >
-            04//INDUSTRIES
-          </Link>
-          <Link
-            href="#hardware"
-            className="hover:text-foreground transition-colors"
-          >
-            05//COMPATIBILITY
-          </Link>
-          <Link
-            href="#roi"
-            className="hover:text-foreground transition-colors"
-          >
-            06//ROI CALCULATOR
-          </Link>
-        </nav>
+          {/* Desktop Navigation */}
+          <nav className="hidden lg:flex items-center gap-6">
+            {navLinks.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                className="text-[14px] font-medium text-[#6c6a64] hover:text-[#141413] transition-colors"
+              >
+                {link.label}
+              </a>
+            ))}
+          </nav>
+        </div>
 
         {/* Action Cluster */}
-        <div className="flex items-center gap-3">
-          <Link
-            href="/claude"
-            className="hidden sm:inline-flex items-center gap-1.5 h-8 px-3 rounded-xs border border-[#cc785c]/40 bg-[#cc785c]/10 hover:bg-[#cc785c]/20 text-[#cc785c] text-xs font-mono transition-colors"
+        <div className="hidden sm:flex items-center gap-4">
+          <a
+            href="tel:+919988071707"
+            className="text-[14px] font-medium text-[#141413] hover:text-[#cc785c] transition-colors"
           >
-            <span className="size-1.5 rounded-full bg-[#cc785c] animate-pulse" />
-            <span>Claude DESIGN.md</span>
-          </Link>
+            Engineering Desk
+          </a>
 
           <PilotDialog>
-            <Button
-              variant="outline"
-              size="sm"
-              className="text-xs font-mono tracking-tight border-border/90 hover:bg-secondary/70 h-8 px-3.5"
+            <button
+              className="inline-flex items-center justify-center h-10 px-5 rounded-[8px] bg-[#cc785c] hover:bg-[#b8674d] active:bg-[#a9583e] text-white font-medium text-[14px] transition-colors shadow-none"
             >
-              Request 48h Pilot
-              <ArrowUpRight className="size-3.5" data-icon="inline-end" />
-            </Button>
+              Schedule 48h Pilot
+              <ArrowRight className="size-4 ml-1.5" />
+            </button>
           </PilotDialog>
         </div>
+
+        {/* Mobile Hamburger */}
+        <div className="lg:hidden flex items-center">
+          <button
+            onClick={() => setMobileOpen(!mobileOpen)}
+            className="p-2 rounded-[8px] text-[#141413] hover:bg-[#efe9de] transition-colors"
+            aria-label="Toggle navigation"
+          >
+            {mobileOpen ? <X className="size-5" /> : <Menu className="size-5" />}
+          </button>
+        </div>
       </div>
+
+      {/* Mobile Drawer Sheet */}
+      {mobileOpen && (
+        <div className="lg:hidden bg-[#faf9f5] border-b border-[#e6dfd8] px-4 pt-3 pb-6 space-y-3 shadow-md animate-in slide-in-from-top-2 duration-150">
+          <div className="flex flex-col gap-1.5">
+            {navLinks.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                onClick={() => setMobileOpen(false)}
+                className="py-2 px-3 rounded-[8px] text-[15px] font-medium text-[#141413] hover:bg-[#efe9de] transition-colors"
+              >
+                {link.label}
+              </a>
+            ))}
+          </div>
+          <div className="pt-3 border-t border-[#e6dfd8]">
+            <PilotDialog>
+              <button
+                onClick={() => setMobileOpen(false)}
+                className="w-full h-10 rounded-[8px] bg-[#cc785c] text-white font-medium text-[14px] flex items-center justify-center gap-2"
+              >
+                Schedule 48h Pilot
+                <ArrowRight className="size-4" />
+              </button>
+            </PilotDialog>
+          </div>
+        </div>
+      )}
     </header>
   );
 }

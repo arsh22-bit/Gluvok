@@ -5,7 +5,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "Gluvok | Autonomous Weighbridge Automation & Industrial AI",
   description:
-    "Industrial edge AI platform for autonomous weighbridge operations. Connect weighing indicators, ANPR cameras, and edge computing for unattended weighment, tamper prevention, and multi-site visibility without scale replacement.",
+    "Turn existing weighbridges into autonomous weighing stations. Seamlessly interfaces with operational scale indicators, synchronizing high-speed ANPR cameras and edge AI.",
   keywords: [
     "weighbridge automation",
     "industrial AI",
@@ -24,8 +24,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark h-full antialiased">
-      <body className="min-h-full flex flex-col bg-background text-foreground">
+    <html lang="en" className="h-full antialiased scroll-smooth">
+      <body className="min-h-full flex flex-col bg-[#faf9f5] text-[#141413] selection:bg-[#cc785c] selection:text-white font-sans">
         <TooltipProvider delay={100}>{children}</TooltipProvider>
       </body>
     </html>

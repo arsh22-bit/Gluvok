@@ -9,8 +9,9 @@ import {
   FileCheck2,
   Lock,
   Layers,
-  ArrowUpRight,
+  Sparkles,
 } from "lucide-react";
+import { AnthropicSpikeMark } from "@/components/claude/anthropic-mark";
 
 export function Capabilities() {
   const capabilities = [
@@ -61,67 +62,78 @@ export function Capabilities() {
     },
     {
       index: "06",
-      title: "Multi-Site Fleet Orchestrator & ERP Sync",
-      subtitle: "Manage 5 to 500+ weighbridges across distributed industrial clusters",
+      title: "Direct SAP & ERP Synchronization",
+      subtitle: "Eliminates duplicate ledger entry and paperwork delays",
       description:
-        "Unified headquarters dashboard providing real-time truck velocity, weight discrepancies, and live camera streams. Pushes verified gross/tare records directly into SAP S/4HANA, Oracle ERP, or custom dispatch software.",
-      technicalHighlight: "Automated WhatsApp and SMS digital weigh slips delivered to drivers & transporters.",
+        "Bi-directional webhooks post gross and tare weight directly into your SAP S/4HANA, Oracle NetSuite, or proprietary plant ERP, automatically generating e-Way bills and clearing purchase order lines.",
+      technicalHighlight: "Automated webhook retry queue with end-to-end receipt acknowledgments.",
       icon: Network,
     },
   ];
 
   return (
-    <section id="capabilities" className="py-20 lg:py-24 border-b border-border/60">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="max-w-3xl mb-12">
-          <div className="text-xs font-mono uppercase tracking-widest text-muted-foreground flex items-center gap-2 mb-2">
-            <span className="size-2 rounded-xs bg-amber-400" />
-            CORE ENGINEERING CAPABILITIES
+    <section id="capabilities" className="w-full bg-[#faf9f5] py-20 lg:py-24 border-b border-[#e6dfd8]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+        {/* Editorial Section Header */}
+        <div className="max-w-2xl space-y-3">
+          <div className="inline-flex items-center gap-2">
+            <AnthropicSpikeMark size={14} className="text-[#cc785c]" />
+            <span className="text-[12px] font-semibold uppercase tracking-[1.5px] text-[#cc785c]">
+              ENGINEERED FOR SCALE
+            </span>
           </div>
-          <h2 className="text-2xl sm:text-4xl font-bold tracking-tight text-foreground">
-            Precision engineering for mission-critical logistics
+
+          <h2
+            className="text-[#141413] text-[36px] sm:text-[44px] font-normal leading-[1.1] tracking-[-1px]"
+            style={{ fontFamily: 'var(--font-serif)' }}
+          >
+            Core platform capabilities.
           </h2>
-          <p className="text-sm sm:text-base text-muted-foreground mt-2">
-            Heavy industrial operations cannot tolerate toy software. Every capability in Gluvok
-            is architected for continuous 24/7 duty cycles under extreme mechanical and environmental conditions.
+
+          <p className="text-[#3d3d3a] text-[16px] sm:text-[18px] leading-[1.55]">
+            Built with the weighing engineering pedigree of industrial plants. Every feature is hardened
+            against rough transport conditions, dust, and tamper attempts.
           </p>
         </div>
 
-        {/* 6 Capabilities Grid */}
+        {/* 3-Up Feature Card Grid (#efe9de with 32px padding) */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {capabilities.map((item, idx) => {
-            const Icon = item.icon;
+          {capabilities.map((cap) => {
+            const Icon = cap.icon;
             return (
               <div
-                key={idx}
-                className="rounded-xs border border-border/70 bg-card p-6 flex flex-col justify-between space-y-5 hover:border-foreground/40 transition-colors group"
+                key={cap.index}
+                className="rounded-[12px] bg-[#efe9de] p-8 border border-[#e6dfd8] flex flex-col justify-between space-y-6 transition-all hover:border-[#cc785c]/40"
               >
                 <div className="space-y-4">
-                  <div className="flex items-center justify-between border-b border-border/50 pb-3">
-                    <span className="text-xs font-mono font-semibold text-muted-foreground group-hover:text-foreground transition-colors">
-                      {item.index} // ARCHITECTURE
+                  <div className="flex items-center justify-between">
+                    <div className="size-10 rounded-[8px] bg-[#faf9f5] border border-[#e6dfd8] flex items-center justify-center text-[#cc785c]">
+                      <Icon className="size-5" />
+                    </div>
+                    <span className="font-mono text-xs text-[#8e8b82]">
+                      {cap.index}
                     </span>
-                    <div className="size-7 rounded-xs bg-secondary/80 flex items-center justify-center text-muted-foreground group-hover:text-foreground transition-colors">
-                      <Icon className="size-3.5" />
-                    </div>
                   </div>
 
-                  <div className="space-y-1">
-                    <h3 className="text-lg font-bold text-foreground font-sans">
-                      {item.title}
+                  <div>
+                    <h3
+                      className="text-[#141413] text-[18px] font-medium leading-[1.4]"
+                      style={{ fontFamily: 'var(--font-sans)' }}
+                    >
+                      {cap.title}
                     </h3>
-                    <div className="text-xs font-medium text-emerald-400 font-mono">
-                      {item.subtitle}
+                    <div className="text-[13px] text-[#6c6a64] font-medium mt-0.5">
+                      {cap.subtitle}
                     </div>
                   </div>
 
-                  <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                    {item.description}
+                  <p className="text-[#3d3d3a] text-[15px] leading-[1.55]">
+                    {cap.description}
                   </p>
                 </div>
 
-                <div className="pt-3 border-t border-border/50 font-mono text-[11px] text-muted-foreground/80 bg-secondary/20 p-2.5 rounded-xs">
-                  <strong className="text-foreground">SPEC:</strong> {item.technicalHighlight}
+                <div className="pt-3 border-t border-[#e6dfd8] text-[12px] font-mono text-[#8e8b82]">
+                  {cap.technicalHighlight}
                 </div>
               </div>
             );

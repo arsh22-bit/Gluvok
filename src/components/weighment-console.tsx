@@ -1,9 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Camera,
   CheckCircle2,
@@ -11,13 +8,14 @@ import {
   RefreshCw,
   Shield,
   Wifi,
-  WifiOff,
   Truck,
   Hash,
   Activity,
   FileText,
   AlertTriangle,
+  ArrowRight,
 } from "lucide-react";
+import { AnthropicSpikeMark } from "@/components/claude/anthropic-mark";
 
 interface VehicleScenario {
   id: string;
@@ -59,352 +57,258 @@ const SCENARIOS: VehicleScenario[] = [
   },
   {
     id: "TRK-03",
-    plate: "CH 01 TA 3391",
-    type: "High-Sided Scrap Trailer",
-    material: "Heavy Melting Scrap (HMS 1/2)",
-    grossWeight: 48920,
+    plate: "CH 01 TA 5549",
+    type: "Multi-Axle Flatbed Trailer",
+    material: "Steel TMT Rebars (Fe 550D)",
+    grossWeight: 49120,
     tareWeight: 16800,
-    netWeight: 32120,
+    netWeight: 32320,
     axleCount: "5 Axles / 18 Wheels",
-    destination: "Mandigobindgarh Steel Works",
-    confidence: 98.9,
-  },
-  {
-    id: "TRK-04",
-    plate: "DL 1L P 9012",
-    type: "Ready-Mix Transit Mixer",
-    material: "M-35 Grade Concrete Mix",
-    grossWeight: 31200,
-    tareWeight: 13950,
-    netWeight: 17250,
-    axleCount: "3 Axles / 10 Wheels",
-    destination: "Airport Road Infrastructure Site",
+    destination: "L&T Infrastructure Site - Mohali",
     confidence: 99.8,
   },
 ];
 
 export function WeighmentConsole() {
-  const [scenarioIndex, setScenarioIndex] = useState(0);
-  const [isOffline, setIsOffline] = useState(false);
-  const [stage, setStage] = useState<"approaching" | "settling" | "locked" | "dispatched">("locked");
-  const [displayedWeight, setDisplayedWeight] = useState(SCENARIOS[0].grossWeight);
-  const [showRawSerial, setShowRawSerial] = useState(false);
+  const [selectedScenarioIndex, setSelectedScenarioIndex] = useState(0);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [step, setStep] = useState<number>(4);
+  const [elapsedTime, setElapsedTime] = useState(16.4);
+  const [weightFluctuation, setWeightFluctuation] = useState(0);
 
-  const current = SCENARIOS[scenarioIndex];
+  const scenario = SCENARIOS[selectedScenarioIndex];
 
-  // Cycle scenario
-  const handleNextVehicle = () => {
-    const nextIdx = (scenarioIndex + 1) % SCENARIOS.length;
-    setScenarioIndex(nextIdx);
-    setStage("approaching");
-    setDisplayedWeight(0);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setWeightFluctuation(Math.floor(Math.random() * 20) - 10);
+    }, 1200);
+    return () => clearInterval(interval);
+  }, []);
+
+  const triggerSimulation = (index: number) => {
+    setSelectedScenarioIndex(index);
+    setIsProcessing(true);
+    setStep(1);
+    setElapsedTime(0.8);
 
     setTimeout(() => {
-      setStage("settling");
-      setDisplayedWeight(SCENARIOS[nextIdx].grossWeight - 60);
-    }, 400);
-
-    setTimeout(() => {
-      setStage("locked");
-      setDisplayedWeight(SCENARIOS[nextIdx].grossWeight);
+      setStep(2);
+      setElapsedTime(4.2);
     }, 900);
+
+    setTimeout(() => {
+      setStep(3);
+      setElapsedTime(11.5);
+    }, 1800);
+
+    setTimeout(() => {
+      setStep(4);
+      setElapsedTime(16.8);
+      setIsProcessing(false);
+    }, 2700);
   };
 
   return (
-    <section id="console" className="py-20 lg:py-24 border-b border-border/60 bg-background/50 relative">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10 pb-6 border-b border-border/60">
-          <div className="space-y-2">
-            <div className="text-xs font-mono uppercase tracking-widest text-muted-foreground flex items-center gap-2">
-              <span className="size-2 rounded-xs bg-amber-400" />
-              LIVE EDGE TELEMETRY EMULATOR
+    <section id="console" className="w-full bg-[#181715] text-[#faf9f5] py-20 lg:py-24 border-b border-white/5">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+        {/* Section Header with Copernicus Serif in Cream #faf9f5 */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-6 border-b border-white/10">
+          <div className="space-y-3 max-w-2xl">
+            <div className="flex items-center gap-2">
+              <AnthropicSpikeMark size={16} className="text-[#cc785c]" />
+              <span className="text-[12px] font-semibold uppercase tracking-[1.5px] text-[#a09d96]">
+                PRODUCT CHROME · HARDWARE EMULATOR
+              </span>
             </div>
-            <h2 className="text-2xl sm:text-4xl font-bold tracking-tight text-foreground">
-              The Autonomous Weighment Pipeline
+
+            <h2
+              className="text-[#faf9f5] text-[34px] sm:text-[44px] font-normal leading-[1.1] tracking-[-1px]"
+              style={{ fontFamily: 'var(--font-serif)' }}
+            >
+              The Unattended Weighment Console.
             </h2>
-            <p className="text-sm text-muted-foreground max-w-xl">
-              Experience Gluvok&apos;s real-time orchestration: ANPR camera feeds, serial indicator reads,
-              stable-weight lock verification, and cryptographic slip issuance in sub-18 seconds.
+
+            <p className="text-[#a09d96] text-[16px] leading-[1.55]">
+              Real-time visualization of Gluvok edge daemon processing live RS-232 indicator serial streams,
+              dual ANPR camera frame alignment, and automated boom barrier relay switching.
             </p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2.5">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setIsOffline(!isOffline)}
-              className="text-xs font-mono h-8 border-border"
-            >
-              {isOffline ? (
-                <>
-                  <WifiOff className="size-3.5 text-amber-400" data-icon="inline-start" />
-                  Offline Edge Buffer (Active)
-                </>
-              ) : (
-                <>
-                  <Wifi className="size-3.5 text-emerald-400" data-icon="inline-start" />
-                  Cloud Stream (Connected)
-                </>
-              )}
-            </Button>
-
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setShowRawSerial(!showRawSerial)}
-              className="text-xs font-mono h-8 border-border"
-            >
-              <Activity className="size-3.5" data-icon="inline-start" />
-              {showRawSerial ? "Hide Raw Serial" : "View RS-232 Stream"}
-            </Button>
-
-            <Button
-              size="sm"
-              onClick={handleNextVehicle}
-              className="text-xs font-mono h-8 bg-foreground text-background hover:bg-neutral-200"
-            >
-              <RefreshCw className="size-3.5" data-icon="inline-start" />
-              Simulate Next Vehicle
-            </Button>
+          {/* Test Vehicle Scenario Selector */}
+          <div className="flex items-center gap-2 overflow-x-auto pb-1">
+            {SCENARIOS.map((sc, i) => (
+              <button
+                key={sc.id}
+                onClick={() => triggerSimulation(i)}
+                className={`px-3.5 py-2 rounded-[8px] text-[13px] font-medium transition-colors border ${
+                  selectedScenarioIndex === i
+                    ? "bg-[#cc785c] text-white border-[#cc785c]"
+                    : "bg-[#252320] text-[#a09d96] border-white/5 hover:text-[#faf9f5]"
+                }`}
+                style={{ fontFamily: 'var(--font-mono)' }}
+              >
+                {sc.plate}
+              </button>
+            ))}
           </div>
         </div>
 
-        {/* Main Terminal Frame */}
-        <div className="rounded-xs border border-border/80 bg-card overflow-hidden shadow-2xl">
-          {/* Terminal Title Bar */}
-          <div className="bg-secondary/60 border-b border-border/80 px-4 py-2.5 flex flex-wrap items-center justify-between text-xs font-mono text-muted-foreground">
-            <div className="flex items-center gap-3">
-              <span className="flex items-center gap-1.5 text-foreground font-semibold">
-                <span className="size-2 rounded-full bg-emerald-500 animate-pulse" />
-                EDGE-NODE // SCALE-01-NORTH
-              </span>
-              <span className="text-border">|</span>
-              <span className="hidden sm:inline">SERIAL BUS: RS-232 (9600-8N1)</span>
-              <span className="text-border hidden sm:inline">|</span>
-              <span className="hidden sm:inline">LATENCY: 4.2ms</span>
+        {/* The Main Console Chrome Container */}
+        <div className="rounded-[16px] bg-[#1f1e1b] border border-white/10 p-6 sm:p-8 space-y-8 shadow-md">
+          {/* Top Bar Indicators */}
+          <div className="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-white/10 text-xs font-mono">
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2">
+                <span className="size-2 rounded-full bg-[#5db872]" />
+                <span className="text-[#faf9f5]">EDGE DAEMON: ONLINE (10MS LOOP)</span>
+              </div>
+              <div className="hidden sm:flex items-center gap-2 text-[#a09d96]">
+                <span>INDICATOR COM1: 9600 BAUD</span>
+              </div>
             </div>
 
             <div className="flex items-center gap-3">
-              <span className="text-[11px] bg-background/80 px-2 py-0.5 rounded-xs border border-border">
-                {isOffline ? "LOCAL SQLITE JOURNAL: BUFFERING" : "FLEET SYNC: IN-SYNC (0 PENDING)"}
+              <span className="text-[#a09d96]">CYCLE TIME:</span>
+              <span className="text-[#cc785c] font-semibold text-sm">
+                {elapsedTime.toFixed(1)}s
               </span>
-              <span className="text-foreground">STATION #4</span>
+              <button
+                onClick={() => triggerSimulation(selectedScenarioIndex)}
+                className="px-2.5 py-1 rounded-[6px] bg-[#252320] hover:bg-[#2d2b27] text-white flex items-center gap-1.5 transition-colors"
+              >
+                <RefreshCw className={`size-3 ${isProcessing ? "animate-spin" : ""}`} />
+                <span>Re-weigh</span>
+              </button>
             </div>
           </div>
 
-          <div className="p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
-            {/* Left 7 Columns: Dual Camera Sensor Feeds */}
-            <div className="lg:col-span-7 space-y-4">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {/* Camera 01: ANPR OCR Feed */}
-                <div className="relative aspect-video rounded-xs border border-border/80 bg-neutral-950 p-3 overflow-hidden flex flex-col justify-between">
-                  <div className="flex items-center justify-between z-10">
-                    <span className="text-[10px] font-mono bg-black/80 px-2 py-0.5 rounded-xs text-neutral-300 border border-neutral-800 flex items-center gap-1.5">
-                      <Camera className="size-3 text-emerald-400" />
-                      CAM-01 // FRONT ANPR (4MP IR)
-                    </span>
-                    <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded-xs border border-emerald-500/20">
-                      CONF: {current.confidence}%
-                    </span>
-                  </div>
+          {/* 3 Column Grid: Vision / Indicator Load Readout / Relays */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            {/* Col 1: Vision Subsystem Camera Mockup (4 Cols) */}
+            <div className="lg:col-span-4 bg-[#181715] rounded-[12px] p-5 border border-white/5 space-y-4">
+              <div className="flex items-center justify-between text-xs text-[#a09d96]">
+                <span className="flex items-center gap-1.5">
+                  <Camera className="size-3.5 text-[#cc785c]" />
+                  FRONT ANPR (CAM-01)
+                </span>
+                <span className="text-[#5db872]">{scenario.confidence}% CONF</span>
+              </div>
 
-                  {/* Synthetic Truck Visual Mock */}
-                  <div className="my-auto py-4 flex flex-col items-center justify-center text-center">
-                    <div className="text-[11px] font-mono text-neutral-500 mb-1 flex items-center gap-1">
-                      <Truck className="size-3.5" />
-                      {current.type}
-                    </div>
-                    {/* Simulated High-Contrast License Plate Box */}
-                    <div className="border-2 border-emerald-400/80 bg-neutral-900/90 px-4 py-1.5 rounded-xs shadow-inner">
-                      <span className="font-mono text-lg sm:text-xl font-bold tracking-widest text-neutral-100">
-                        {current.plate}
-                      </span>
-                    </div>
-                    <div className="text-[9px] font-mono text-neutral-400 mt-1">
-                      BOUNDING BOX: [x:142, y:288, w:420, h:110]
-                    </div>
-                  </div>
-
-                  <div className="flex items-center justify-between text-[10px] font-mono text-neutral-400 z-10 border-t border-neutral-800/80 pt-1.5">
-                    <span>EXPOSURE: 1/1200s (ANTI-BLUR)</span>
-                    <span>WDR: ACTIVE</span>
-                  </div>
+              {/* Simulated Camera Feed Container */}
+              <div className="aspect-video w-full rounded-[8px] bg-[#252320] border border-white/10 flex flex-col items-center justify-center relative overflow-hidden p-4 text-center">
+                <div className="absolute top-2 left-2 flex items-center gap-1 text-[10px] font-mono text-[#5db872]">
+                  <span className="size-1.5 rounded-full bg-[#5db872] animate-pulse" />
+                  REC 1080P
                 </div>
 
-                {/* Camera 02: Cargo Bed / Axle Position Feed */}
-                <div className="relative aspect-video rounded-xs border border-border/80 bg-neutral-950 p-3 overflow-hidden flex flex-col justify-between">
-                  <div className="flex items-center justify-between z-10">
-                    <span className="text-[10px] font-mono bg-black/80 px-2 py-0.5 rounded-xs text-neutral-300 border border-neutral-800 flex items-center gap-1.5">
-                      <Camera className="size-3 text-cyan-400" />
-                      CAM-02 // CARGO OVERVIEW (WDR)
-                    </span>
-                    <span className="text-[10px] font-mono text-neutral-400">
-                      AXLE: ALIGNED
-                    </span>
+                <div className="space-y-1">
+                  <div className="inline-block px-3 py-1 rounded-[4px] bg-[#181715] border border-white/20 font-mono text-lg font-bold tracking-wider text-[#faf9f5]">
+                    {scenario.plate}
                   </div>
+                  <div className="text-[11px] text-[#a09d96]">{scenario.type}</div>
+                </div>
 
-                  {/* Cargo Bed Verification Graphics */}
-                  <div className="my-auto py-4 flex flex-col items-center justify-center text-center">
-                    <div className="border border-cyan-500/40 border-dashed bg-cyan-950/20 p-3 rounded-xs max-w-[210px] space-y-1">
-                      <div className="text-[10px] font-mono text-cyan-400 uppercase tracking-tight">
-                        LOAD INTEGRITY VERIFIED
-                      </div>
-                      <div className="text-[11px] font-sans font-medium text-neutral-200 truncate">
-                        {current.material}
-                      </div>
-                      <div className="text-[9px] font-mono text-neutral-400">
-                        Zero deck overhang detected
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center justify-between text-[10px] font-mono text-neutral-400 z-10 border-t border-neutral-800/80 pt-1.5">
-                    <span>WEIGHLINE SENSORS: 4/4 ON DECK</span>
-                    <span>NO TAMPER FLAGGED</span>
-                  </div>
+                <div className="absolute bottom-2 right-2 text-[10px] font-mono text-[#a09d96]">
+                  DECK GEOMETRY: 100% IN-BOUNDS
                 </div>
               </div>
 
-              {/* Raw Serial Stream Drawer (if activated) */}
-              {showRawSerial && (
-                <div className="rounded-xs border border-border bg-neutral-950 p-3 font-mono text-xs text-neutral-300 space-y-1 animate-in fade-in duration-200">
-                  <div className="text-neutral-500 text-[10px] flex items-center justify-between">
-                    <span>RAW RS-232 UART PACKET STREAM (/dev/ttyUSB0)</span>
-                    <span className="text-emerald-400">STATUS: BROADCASTING</span>
-                  </div>
-                  <p className="text-[11px] text-emerald-400/90 overflow-x-auto">
-                    &lt;STX&gt;+0{displayedWeight}kg GR 0014220kg TR 0028620kg NT 2026-10-09T16:50:12Z &lt;ETX&gt; [CRC: 0x8F]
-                  </p>
-                  <p className="text-[10px] text-neutral-500">
-                    Protocol: Avery Weightronix / Toledo Continuous Format • Auto-Baud Synchronized
-                  </p>
+              {/* Material Classification */}
+              <div className="space-y-1.5 text-xs">
+                <div className="text-[#a09d96]">CARGO MANIFEST CLASSIFICATION:</div>
+                <div className="text-[#faf9f5] font-medium p-2 rounded-[6px] bg-[#252320]">
+                  {scenario.material}
                 </div>
-              )}
+              </div>
+            </div>
 
-              {/* Operational Dispatch Evidence Snapshot Card */}
-              <div className="rounded-xs border border-border bg-secondary/30 p-3.5 space-y-2">
-                <div className="flex items-center justify-between text-xs font-mono">
-                  <span className="text-foreground font-semibold flex items-center gap-1.5">
-                    <FileText className="size-3.5 text-muted-foreground" />
-                    CRYPTOGRAPHIC WEIGHMENT EVIDENCE RECORD
-                  </span>
-                  <span className="text-emerald-400 flex items-center gap-1">
-                    <CheckCircle2 className="size-3" />
-                    AUTONOMOUS DISPATCH AUTHORIZED
-                  </span>
+            {/* Col 2: Load Cell Hardware Serial Readout (5 Cols) */}
+            <div className="lg:col-span-5 bg-[#181715] rounded-[12px] p-6 border border-white/5 space-y-6">
+              <div className="flex items-center justify-between">
+                <span className="text-xs uppercase tracking-wider text-[#a09d96] font-mono">
+                  HARDWARE SERIAL CAPTURE (RS-232)
+                </span>
+                <span className="px-2 py-0.5 rounded text-[11px] font-mono bg-[#5db872]/20 text-[#5db872]">
+                  CALIBRATION VERIFIED
+                </span>
+              </div>
+
+              {/* Huge Monospace Weight Display */}
+              <div className="text-center py-4 space-y-1 bg-[#1f1e1b] rounded-[10px] border border-white/5">
+                <div className="text-xs font-mono text-[#a09d96]">INDICATOR GROSS WEIGHT:</div>
+                <div
+                  className="text-[44px] sm:text-[54px] font-mono font-bold tracking-tight text-[#faf9f5]"
+                  style={{ fontFamily: 'var(--font-mono)' }}
+                >
+                  {(scenario.grossWeight + (isProcessing ? weightFluctuation : 0)).toLocaleString()}{" "}
+                  <span className="text-xl font-normal text-[#a09d96]">kg</span>
                 </div>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs font-mono text-muted-foreground pt-1 border-t border-border/50">
-                  <div>
-                    <span className="text-[10px] uppercase block text-muted-foreground/70">Transaction</span>
-                    <span className="text-foreground font-medium">TXN-{current.id}-2026</span>
+                <div className="text-[12px] font-mono text-[#5db872] flex items-center justify-center gap-1.5">
+                  <CheckCircle2 className="size-3.5" />
+                  STABLE WEIGHT LOCK CONFIRMED
+                </div>
+              </div>
+
+              {/* Gross / Tare / Net Breakdown */}
+              <div className="grid grid-cols-3 gap-2 text-center font-mono text-xs">
+                <div className="p-2.5 rounded-[8px] bg-[#252320]">
+                  <div className="text-[#a09d96] text-[10px]">GROSS</div>
+                  <div className="text-[#faf9f5] font-semibold mt-1">
+                    {scenario.grossWeight.toLocaleString()} kg
                   </div>
-                  <div>
-                    <span className="text-[10px] uppercase block text-muted-foreground/70">Destination</span>
-                    <span className="text-foreground font-medium truncate block">{current.destination}</span>
+                </div>
+                <div className="p-2.5 rounded-[8px] bg-[#252320]">
+                  <div className="text-[#a09d96] text-[10px]">TARE (STORED)</div>
+                  <div className="text-[#faf9f5] font-semibold mt-1">
+                    {scenario.tareWeight.toLocaleString()} kg
                   </div>
-                  <div>
-                    <span className="text-[10px] uppercase block text-muted-foreground/70">Axle Config</span>
-                    <span className="text-foreground font-medium">{current.axleCount}</span>
-                  </div>
-                  <div>
-                    <span className="text-[10px] uppercase block text-muted-foreground/70">SHA-256 Stamp</span>
-                    <span className="text-foreground font-medium truncate block">e3b0c442...98c0</span>
+                </div>
+                <div className="p-2.5 rounded-[8px] bg-[#cc785c]/20 border border-[#cc785c]/30">
+                  <div className="text-[#cc785c] text-[10px] font-semibold">NET CARGO</div>
+                  <div className="text-[#faf9f5] font-bold mt-1">
+                    {scenario.netWeight.toLocaleString()} kg
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Right 5 Columns: Indicator Telemetry Readout & Verification */}
-            <div className="lg:col-span-5 flex flex-col justify-between gap-4">
-              {/* Digital Scale Readout Display */}
-              <div className="rounded-xs border border-border bg-neutral-950 p-5 space-y-4">
-                <div className="flex items-center justify-between font-mono text-xs text-neutral-400">
-                  <span className="flex items-center gap-2">
-                    <span className="size-2 rounded-full bg-amber-400 animate-pulse" />
-                    INDICATOR DIGITAL READOUT
-                  </span>
-                  <span className="text-[11px] text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-xs border border-emerald-500/20">
-                    {stage === "locked" ? "STABLE WEIGHT LOCKED" : "SAMPLING LOAD CELLS..."}
+            {/* Col 3: Automated State Machine & Relays (3 Cols) */}
+            <div className="lg:col-span-3 bg-[#181715] rounded-[12px] p-5 border border-white/5 space-y-4">
+              <span className="text-xs uppercase tracking-wider text-[#a09d96] font-mono block">
+                GATE STATE MACHINE
+              </span>
+
+              <div className="space-y-3 font-mono text-xs">
+                <div className="flex items-center justify-between p-2 rounded-[6px] bg-[#252320]">
+                  <span>1. ANPR OCR</span>
+                  <span className={step >= 1 ? "text-[#5db872]" : "text-[#8e8b82]"}>
+                    {step >= 1 ? "RESOLVED" : "WAITING"}
                   </span>
                 </div>
-
-                {/* Primary Gross Weight Number */}
-                <div className="text-center py-2">
-                  <div className="text-4xl sm:text-5xl font-mono font-bold tracking-tight text-neutral-100 tabular-nums">
-                    {displayedWeight.toLocaleString()} <span className="text-xl sm:text-2xl text-neutral-500 font-normal">KG</span>
-                  </div>
-                  <div className="text-xs font-mono text-neutral-400 mt-1 uppercase tracking-wider">
-                    GROSS MEASURED WEIGHT
-                  </div>
+                <div className="flex items-center justify-between p-2 rounded-[6px] bg-[#252320]">
+                  <span>2. AXLE BOUNDARY</span>
+                  <span className={step >= 2 ? "text-[#5db872]" : "text-[#8e8b82]"}>
+                    {step >= 2 ? "CENTERED" : "SCANNING"}
+                  </span>
                 </div>
-
-                {/* Tare and Net Tri-Cards */}
-                <div className="grid grid-cols-2 gap-2 pt-3 border-t border-neutral-800 font-mono text-xs">
-                  <div className="bg-neutral-900 p-2.5 rounded-xs border border-neutral-800">
-                    <div className="text-[10px] text-neutral-400 uppercase">STORED FLEET TARE</div>
-                    <div className="text-base font-semibold text-neutral-200 tabular-nums">
-                      {current.tareWeight.toLocaleString()} KG
-                    </div>
-                  </div>
-
-                  <div className="bg-neutral-900 p-2.5 rounded-xs border border-neutral-800">
-                    <div className="text-[10px] text-emerald-400 uppercase">NET CARGO WEIGHT</div>
-                    <div className="text-base font-semibold text-emerald-300 tabular-nums">
-                      {current.netWeight.toLocaleString()} KG
-                    </div>
-                  </div>
+                <div className="flex items-center justify-between p-2 rounded-[6px] bg-[#252320]">
+                  <span>3. SERIAL WEIGHT</span>
+                  <span className={step >= 3 ? "text-[#5db872]" : "text-[#8e8b82]"}>
+                    {step >= 3 ? "LOCKED" : "POLLING"}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between p-2 rounded-[6px] bg-[#252320]">
+                  <span>4. BOOM BARRIER</span>
+                  <span className={step >= 4 ? "text-[#cc785c] font-bold" : "text-[#8e8b82]"}>
+                    {step >= 4 ? "RAISED" : "CLOSED"}
+                  </span>
                 </div>
               </div>
 
-              {/* 5-Step Autonomous State Machine */}
-              <div className="rounded-xs border border-border bg-secondary/30 p-4 space-y-2.5">
-                <div className="text-xs font-mono uppercase tracking-wider text-muted-foreground flex items-center justify-between">
-                  <span>UNATTENDED VERIFICATION STACK</span>
-                  <span className="text-foreground font-semibold">18 SEC TOTAL</span>
-                </div>
-
-                <div className="space-y-1.5 font-mono text-xs">
-                  <div className="flex items-center justify-between p-1.5 rounded-xs bg-background/50 border border-border/50">
-                    <span className="flex items-center gap-2 text-foreground">
-                      <CheckCircle2 className="size-3.5 text-emerald-400" />
-                      01 // Optical ANPR Number Plate
-                    </span>
-                    <span className="text-muted-foreground text-[11px]">{current.plate}</span>
-                  </div>
-
-                  <div className="flex items-center justify-between p-1.5 rounded-xs bg-background/50 border border-border/50">
-                    <span className="flex items-center gap-2 text-foreground">
-                      <CheckCircle2 className="size-3.5 text-emerald-400" />
-                      02 // Axle Deck Positioning Check
-                    </span>
-                    <span className="text-emerald-400 text-[11px]">Centered (0 mm)</span>
-                  </div>
-
-                  <div className="flex items-center justify-between p-1.5 rounded-xs bg-background/50 border border-border/50">
-                    <span className="flex items-center gap-2 text-foreground">
-                      <CheckCircle2 className="size-3.5 text-emerald-400" />
-                      03 // Serial Stable-Weight Capture
-                    </span>
-                    <span className="text-foreground text-[11px]">{current.grossWeight.toLocaleString()} kg</span>
-                  </div>
-
-                  <div className="flex items-center justify-between p-1.5 rounded-xs bg-background/50 border border-border/50">
-                    <span className="flex items-center gap-2 text-foreground">
-                      <CheckCircle2 className="size-3.5 text-emerald-400" />
-                      04 // Anti-Pilferage Fraud Check
-                    </span>
-                    <span className="text-emerald-400 text-[11px]">Passed (Zero Anomaly)</span>
-                  </div>
-
-                  <div className="flex items-center justify-between p-1.5 rounded-xs bg-background/50 border border-border/50">
-                    <span className="flex items-center gap-2 text-foreground">
-                      <CheckCircle2 className="size-3.5 text-emerald-400" />
-                      05 // Boom Barrier Raised & ERP Sync
-                    </span>
-                    <span className="text-emerald-400 text-[11px]">Gate Open</span>
-                  </div>
-                </div>
+              <div className="pt-2 border-t border-white/10 text-center">
+                <span className="text-[11px] text-[#a09d96]">
+                  Digital Slip SHA-256 Stamped · WhatsApp Dispatched
+                </span>
               </div>
             </div>
           </div>

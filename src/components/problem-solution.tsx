@@ -1,7 +1,16 @@
 "use client";
 
-import { Badge } from "@/components/ui/badge";
-import { AlertCircle, CheckCircle2, Clock, ShieldX, ShieldCheck, Database, Server } from "lucide-react";
+import {
+  AlertCircle,
+  CheckCircle2,
+  Clock,
+  ShieldX,
+  ShieldCheck,
+  Database,
+  Server,
+  ArrowRight,
+} from "lucide-react";
+import { AnthropicSpikeMark } from "@/components/claude/anthropic-mark";
 
 export function ProblemSolution() {
   const comparisons = [
@@ -62,58 +71,63 @@ export function ProblemSolution() {
   ];
 
   return (
-    <section id="problem" className="py-20 lg:py-24 border-b border-border/60">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="max-w-3xl mb-12">
-          <div className="text-xs font-mono uppercase tracking-widest text-muted-foreground flex items-center gap-2 mb-2">
-            <span className="size-2 rounded-xs bg-neutral-400" />
-            OPERATIONAL FRICTION VS. GLUVOK AUTONOMY
+    <section id="problems" className="w-full bg-[#faf9f5] py-20 lg:py-24 border-b border-[#e6dfd8]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+        {/* Editorial Section Header */}
+        <div className="max-w-2xl space-y-3">
+          <div className="inline-flex items-center gap-2">
+            <AnthropicSpikeMark size={14} className="text-[#cc785c]" />
+            <span className="text-[12px] font-semibold uppercase tracking-[1.5px] text-[#cc785c]">
+              OPERATIONAL COMPARISON
+            </span>
           </div>
-          <h2 className="text-2xl sm:text-4xl font-bold tracking-tight text-foreground">
-            Why manual weighbridges fail heavy industry
+
+          <h2
+            className="text-[#141413] text-[36px] sm:text-[44px] font-normal leading-[1.1] tracking-[-1px]"
+            style={{ fontFamily: 'var(--font-serif)' }}
+          >
+            The gap between manual gates and autonomous dispatch.
           </h2>
-          <p className="text-sm sm:text-base text-muted-foreground mt-2">
-            Traditional scale houses are the single biggest bottleneck in bulk dispatch operations.
-            Here is how Gluvok replaces manual vulnerability with industrial edge rigor.
+
+          <p className="text-[#3d3d3a] text-[16px] sm:text-[18px] leading-[1.55]">
+            Industrial scales are accurate; manual data entry is fragile. Gluvok replaces manual clerk booths
+            with deterministic edge automation.
           </p>
         </div>
 
-        {/* 2-Column Comparison Grid */}
+        {/* 2-Column or 3-Column Feature Cards in #efe9de */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {comparisons.map((item, idx) => (
             <div
               key={idx}
-              className="rounded-xs border border-border/70 bg-card p-5 flex flex-col justify-between space-y-4 hover:border-border transition-colors"
+              className="rounded-[12px] bg-[#efe9de] p-8 border border-[#e6dfd8] flex flex-col justify-between space-y-6 transition-all hover:border-[#cc785c]/40"
             >
-              <div className="flex items-center justify-between border-b border-border/50 pb-2">
-                <span className="text-[10px] font-mono tracking-wider text-muted-foreground uppercase">
+              <div className="space-y-4">
+                <span className="text-[11px] font-mono uppercase tracking-[1.5px] text-[#8e8b82]">
                   {item.category}
                 </span>
-                <span className="text-[10px] font-mono text-muted-foreground/60">
-                  REF-{String(idx + 1).padStart(2, "0")}
-                </span>
-              </div>
 
-              {/* Legacy Pain */}
-              <div className="space-y-1.5 p-3 rounded-xs bg-red-950/10 border border-red-500/20 text-xs">
-                <div className="font-semibold text-red-300 flex items-center gap-1.5">
-                  <AlertCircle className="size-3.5 text-red-400 shrink-0" />
-                  {item.problemTitle}
+                {/* Legacy Problem */}
+                <div className="space-y-1.5 pb-4 border-b border-[#e6dfd8]">
+                  <div className="text-[15px] font-medium text-[#6c6a64] flex items-center gap-2">
+                    <span className="size-1.5 rounded-full bg-[#c64545]" />
+                    <span>{item.problemTitle}</span>
+                  </div>
+                  <p className="text-[13px] text-[#6c6a64] leading-relaxed">
+                    {item.problemDesc}
+                  </p>
                 </div>
-                <p className="text-muted-foreground text-[11px] leading-relaxed">
-                  {item.problemDesc}
-                </p>
-              </div>
 
-              {/* Gluvok Solution */}
-              <div className="space-y-1.5 p-3 rounded-xs bg-emerald-950/10 border border-emerald-500/20 text-xs">
-                <div className="font-semibold text-emerald-300 flex items-center gap-1.5">
-                  <CheckCircle2 className="size-3.5 text-emerald-400 shrink-0" />
-                  {item.solutionTitle}
+                {/* Gluvok Solution */}
+                <div className="space-y-1.5">
+                  <div className="text-[16px] font-medium text-[#141413] flex items-center gap-2">
+                    <CheckCircle2 className="size-4 text-[#cc785c]" />
+                    <span>{item.solutionTitle}</span>
+                  </div>
+                  <p className="text-[14px] text-[#3d3d3a] leading-relaxed">
+                    {item.solutionDesc}
+                  </p>
                 </div>
-                <p className="text-muted-foreground text-[11px] leading-relaxed">
-                  {item.solutionDesc}
-                </p>
               </div>
             </div>
           ))}

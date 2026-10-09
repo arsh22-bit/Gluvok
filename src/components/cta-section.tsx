@@ -1,67 +1,68 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { PilotDialog } from "@/components/pilot-dialog";
-import { ShieldCheck, ArrowRight, PhoneCall, Cpu, Check } from "lucide-react";
+import { PhoneCall, ArrowRight, Check } from "lucide-react";
+import { AnthropicSpikeMark } from "@/components/claude/anthropic-mark";
 
 export function CtaSection() {
   return (
-    <section className="py-20 lg:py-24 border-b border-border/60 bg-gradient-to-b from-background via-secondary/20 to-background relative overflow-hidden">
-      <div className="absolute inset-0 technical-grid pointer-events-none opacity-30" />
+    <section className="w-full bg-[#faf9f5] py-20 lg:py-24 border-b border-[#e6dfd8]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Full-Bleed High-Voltage Coral Card (#cc785c) */}
+        <div className="rounded-[16px] bg-[#cc785c] text-white p-10 sm:p-16 text-center space-y-8 shadow-sm">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/20 text-white text-[12px] font-semibold tracking-[1.5px] uppercase">
+            <AnthropicSpikeMark size={14} color="white" />
+            <span>2026 INDUSTRIAL FLEET COHORT</span>
+          </div>
 
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center space-y-8">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-xs border border-border/80 bg-card text-xs font-mono text-muted-foreground">
-          <span className="size-2 rounded-full bg-emerald-400" />
-          <span>EARLY ADOPTER PILOT PROGRAM // 2026 FLEET COHORT</span>
-        </div>
+          <h2
+            className="text-white text-[32px] sm:text-[46px] font-normal leading-[1.1] tracking-[-1px] max-w-3xl mx-auto"
+            style={{ fontFamily: 'var(--font-serif)' }}
+          >
+            Eliminate weighbridge bottlenecks before your next dispatch peak.
+          </h2>
 
-        <h2 className="text-3xl sm:text-5xl font-bold tracking-tight text-foreground max-w-3xl mx-auto leading-tight">
-          Eliminate weighbridge bottlenecks before your next dispatch peak.
-        </h2>
+          <p className="text-white/90 text-[16px] sm:text-[18px] max-w-2xl mx-auto leading-relaxed">
+            Arrange a 48-hour parallel pilot on your scale. Our engineers arrive with pre-configured edge hardware
+            ready to plug into your indicator over secondary serial bus with zero scale downtime.
+          </p>
 
-        <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-          Book an engineering walkthrough or arrange a 48-hour parallel pilot on your scale.
-          Our team arrives with pre-configured edge hardware ready to plug into your indicator.
-        </p>
+          {/* Action Row */}
+          <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
+            <PilotDialog>
+              <button
+                className="inline-flex items-center justify-center h-11 px-8 rounded-[8px] bg-[#faf9f5] hover:bg-[#efe9de] text-[#141413] font-medium text-[15px] leading-none transition-colors shadow-sm"
+              >
+                Schedule 48-Hour Pilot
+                <ArrowRight className="size-4 ml-2" />
+              </button>
+            </PilotDialog>
 
-        <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
-          <PilotDialog>
-            <Button
-              size="lg"
-              className="h-12 px-8 font-mono text-xs uppercase tracking-wider bg-foreground text-background hover:bg-neutral-200"
-            >
-              Schedule 48-Hour Pilot
-              <ArrowRight className="size-4" data-icon="inline-end" />
-            </Button>
-          </PilotDialog>
+            <a href="tel:+919988071707">
+              <button
+                className="inline-flex items-center justify-center h-11 px-6 rounded-[8px] bg-white/10 hover:bg-white/20 text-white border border-white/30 font-medium text-[14px] leading-none transition-colors"
+              >
+                <PhoneCall className="size-4 mr-2" />
+                Direct Desk: +91 99880 71707
+              </button>
+            </a>
+          </div>
 
-          <a href="tel:+919988071707">
-            <Button
-              variant="outline"
-              size="lg"
-              className="h-12 px-6 font-mono text-xs uppercase tracking-wider border-border hover:bg-secondary/60 text-foreground"
-            >
-              <PhoneCall className="size-4" data-icon="inline-start" />
-              Direct Engineering Desk: +91 99880 71707
-            </Button>
-          </a>
-        </div>
-
-        {/* Assurance badges */}
-        <div className="pt-8 flex flex-wrap items-center justify-center gap-6 text-xs font-mono text-muted-foreground border-t border-border/40 max-w-2xl mx-auto">
-          <span className="flex items-center gap-1.5">
-            <Check className="size-3.5 text-emerald-400" />
-            Zero civil work or new load cells
-          </span>
-          <span className="flex items-center gap-1.5">
-            <Check className="size-3.5 text-emerald-400" />
-            Non-disclosure agreement on plant logs
-          </span>
-          <span className="flex items-center gap-1.5">
-            <Check className="size-3.5 text-emerald-400" />
-            Turnkey hardware + software
-          </span>
+          {/* Assurance Checkpoints */}
+          <div className="pt-6 border-t border-white/20 flex flex-wrap items-center justify-center gap-8 text-[13px] text-white/90">
+            <span className="flex items-center gap-2">
+              <Check className="size-4 text-white" />
+              Zero civil work or new load cells
+            </span>
+            <span className="flex items-center gap-2">
+              <Check className="size-4 text-white" />
+              Non-disclosure agreement on plant logs
+            </span>
+            <span className="flex items-center gap-2">
+              <Check className="size-4 text-white" />
+              Compatible with Avery, Mettler, Cardinal & regional OEMs
+            </span>
+          </div>
         </div>
       </div>
     </section>

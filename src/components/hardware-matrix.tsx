@@ -1,7 +1,7 @@
 "use client";
 
-import { Badge } from "@/components/ui/badge";
-import { Check, Cpu, HardDrive, ShieldCheck, Radio, Server } from "lucide-react";
+import { Check, Cpu, HardDrive, ShieldCheck, Radio, Server, Activity } from "lucide-react";
+import { AnthropicSpikeMark } from "@/components/claude/anthropic-mark";
 
 export function HardwareMatrix() {
   const indicators = [
@@ -60,117 +60,103 @@ export function HardwareMatrix() {
         "4MP Sony Starvis sensor, 120dB True WDR for headlight suppression, motorized varifocal lens (2.8–12mm), IP67 weatherproof housing.",
     },
     {
-      component: "Peripheral Relay I/O Module",
+      component: "Relay & Barrier Controller",
       detail:
-        "4 optocoupled dry-contact relay outputs for automatic boom barrier opening, green/red traffic light signals, and driver audio beeper.",
-    },
-    {
-      component: "Local Data Store",
-      detail:
-        "Industrial high-endurance pSLC storage hosting an encrypted write-ahead logged SQLite database buffering up to 500,000 offline weighment transactions.",
+        "Optocoupled dry-contact output relays rated 250V AC / 10A for instantaneous triggering of boom barriers, traffic signals, and hooters.",
     },
   ];
 
   return (
-    <section id="hardware" className="py-20 lg:py-24 border-b border-border/60">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="max-w-3xl mb-12">
-          <div className="text-xs font-mono uppercase tracking-widest text-muted-foreground flex items-center gap-2 mb-2">
-            <span className="size-2 rounded-xs bg-amber-400" />
-            HARDWARE COMPATIBILITY & PROTOCOL MATRIX
+    <section id="hardware" className="w-full bg-[#faf9f5] py-20 lg:py-24 border-b border-[#e6dfd8]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+        {/* Section Header */}
+        <div className="max-w-2xl space-y-3">
+          <div className="inline-flex items-center gap-2">
+            <AnthropicSpikeMark size={14} className="text-[#cc785c]" />
+            <span className="text-[12px] font-semibold uppercase tracking-[1.5px] text-[#cc785c]">
+              HARDWARE COMPATIBILITY
+            </span>
           </div>
-          <h2 className="text-2xl sm:text-4xl font-bold tracking-tight text-foreground">
-            Zero scale replacement. Certified compatibility.
+
+          <h2
+            className="text-[#141413] text-[36px] sm:text-[44px] font-normal leading-[1.1] tracking-[-1px]"
+            style={{ fontFamily: 'var(--font-serif)' }}
+          >
+            Universal scale indicator compatibility.
           </h2>
-          <p className="text-sm sm:text-base text-muted-foreground mt-2">
-            Gluvok was built to respect your existing capital investment. Our passive serial tap
-            plugs into virtually every commercial weighbridge indicator in service today.
+
+          <p className="text-[#3d3d3a] text-[16px] sm:text-[18px] leading-[1.55]">
+            Gluvok connects non-invasively through secondary serial ports without breaking calibration seals
+            or requiring legal metrology recertification.
           </p>
         </div>
 
-        {/* Indicator Table */}
-        <div className="rounded-xs border border-border/80 bg-card overflow-hidden mb-10 shadow-lg">
-          <div className="bg-secondary/40 border-b border-border px-5 py-3 flex items-center justify-between text-xs font-mono">
-            <span className="text-foreground font-semibold flex items-center gap-2">
-              <Radio className="size-3.5 text-muted-foreground" />
-              TESTED & CERTIFIED SCALE INDICATOR MAKES
-            </span>
-            <span className="text-emerald-400 font-mono text-[11px]">
-              UNIVERSAL PARSER READY
-            </span>
-          </div>
-
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs font-mono border-collapse">
-              <thead>
-                <tr className="border-b border-border/60 bg-secondary/20 text-muted-foreground uppercase text-[10px] tracking-wider">
-                  <th className="py-3 px-5 font-medium">Manufacturer</th>
-                  <th className="py-3 px-5 font-medium">Supported Models</th>
-                  <th className="py-3 px-5 font-medium">Serial Protocol</th>
-                  <th className="py-3 px-5 font-medium text-right">Compatibility</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-border/40 text-muted-foreground">
-                {indicators.map((row, idx) => (
-                  <tr key={idx} className="hover:bg-secondary/20 transition-colors">
-                    <td className="py-3.5 px-5 font-semibold text-foreground">
-                      {row.make}
-                    </td>
-                    <td className="py-3.5 px-5 text-neutral-300">
-                      {row.models}
-                    </td>
-                    <td className="py-3.5 px-5 text-[11px]">
-                      {row.interfaceType}
-                    </td>
-                    <td className="py-3.5 px-5 text-right">
-                      <span className="inline-flex items-center gap-1 text-emerald-400 text-[11px] bg-emerald-500/10 px-2 py-0.5 rounded-xs border border-emerald-500/20">
-                        <Check className="size-3" />
-                        {row.status}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        {/* Edge Appliance Hardware Specs */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 font-mono text-xs">
-          {specs.map((item, idx) => (
+        {/* Indicator Tiles in connector-tile style (3-Up or 2-Up) */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          {indicators.map((ind, idx) => (
             <div
               key={idx}
-              className="p-4 rounded-xs border border-border/70 bg-card space-y-1.5"
+              className="rounded-[12px] bg-[#faf9f5] p-5 border border-[#e6dfd8] flex flex-col justify-between space-y-4 hover:border-[#cc785c]/40 transition-colors shadow-2xs"
             >
-              <div className="text-[10px] text-muted-foreground uppercase tracking-wider flex items-center justify-between">
-                <span>COMPONENT SPEC</span>
-                <span>0{idx + 1}</span>
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Radio className="size-4 text-[#cc785c]" />
+                    <span
+                      className="text-[16px] font-medium text-[#141413]"
+                      style={{ fontFamily: 'var(--font-sans)' }}
+                    >
+                      {ind.make}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <span className="size-2 rounded-full bg-[#5db872]" />
+                    <span className="text-[11px] font-medium text-[#6c6a64]">Certified</span>
+                  </div>
+                </div>
+
+                <div className="space-y-1 text-xs">
+                  <div className="text-[#8e8b82]">MODELS SUPPORTED:</div>
+                  <div className="font-mono text-[#3d3d3a] font-medium">
+                    {ind.models}
+                  </div>
+                </div>
               </div>
-              <div className="text-sm font-semibold text-foreground font-sans">
-                {item.component}
+
+              <div className="pt-2 border-t border-[#e6dfd8] text-[11px] font-mono text-[#6c6a64]">
+                {ind.interfaceType}
               </div>
-              <p className="text-xs text-muted-foreground font-sans leading-relaxed">
-                {item.detail}
-              </p>
             </div>
           ))}
+        </div>
 
-          {/* Custom Indicator Protocol Inquiries */}
-          <div className="p-4 rounded-xs border border-dashed border-border bg-secondary/20 flex flex-col justify-between space-y-2">
-            <div>
-              <div className="text-[10px] text-amber-400 uppercase tracking-wider">
-                PROPRIETARY / CUSTOM PROTOCOL?
+        {/* Industrial Grade Specifications Grid in #efe9de */}
+        <div className="rounded-[16px] bg-[#efe9de] p-8 sm:p-10 border border-[#e6dfd8] space-y-6">
+          <div className="flex items-center gap-2">
+            <Cpu className="size-5 text-[#cc785c]" />
+            <h3
+              className="text-[20px] font-medium text-[#141413]"
+              style={{ fontFamily: 'var(--font-sans)' }}
+            >
+              Field-Hardened Edge Specifications
+            </h3>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {specs.map((sp, i) => (
+              <div
+                key={i}
+                className="bg-[#faf9f5] rounded-[10px] p-5 border border-[#e6dfd8] space-y-2"
+              >
+                <div className="text-[13px] font-medium text-[#141413] flex items-center gap-1.5">
+                  <Check className="size-3.5 text-[#cc785c] shrink-0" />
+                  <span>{sp.component}</span>
+                </div>
+                <p className="text-[12px] text-[#6c6a64] leading-relaxed">
+                  {sp.detail}
+                </p>
               </div>
-              <div className="text-sm font-semibold text-foreground font-sans mt-1">
-                Indicator Protocol Testing
-              </div>
-              <p className="text-xs text-muted-foreground font-sans leading-relaxed mt-1">
-                Have a specialized or legacy indicator? Share the port nameplate photo or baud settings. We write custom serial decoders within 24 hours.
-              </p>
-            </div>
-            <div className="text-[11px] text-emerald-400">
-              Zero hardware lock-in.
-            </div>
+            ))}
           </div>
         </div>
       </div>
