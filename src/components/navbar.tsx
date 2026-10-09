@@ -80,6 +80,14 @@ export function Navbar() {
 
         {/* Action Cluster */}
         <div className="flex items-center gap-3">
+          <Link
+            href="/claude"
+            className="hidden sm:inline-flex items-center gap-1.5 h-8 px-3 rounded-xs border border-[#cc785c]/40 bg-[#cc785c]/10 hover:bg-[#cc785c]/20 text-[#cc785c] text-xs font-mono transition-colors"
+          >
+            <span className="size-1.5 rounded-full bg-[#cc785c] animate-pulse" />
+            <span>Claude DESIGN.md</span>
+          </Link>
+
           <PilotDialog>
             <Button
               variant="outline"
